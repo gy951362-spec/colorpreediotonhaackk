@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@developerwrt — Colour HUD</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 15%,#291052,#090611 58%,#030207);font-family:Arial,sans-serif;color:#fff;display:grid;place-items:center;padding:18px}
+.panel{width:min(390px,100%);border:1px solid #b77aff;border-radius:24px;padding:15px;background:linear-gradient(145deg,rgba(58,20,105,.97),rgba(13,7,31,.98));box-shadow:0 0 18px #9d4dff,0 0 55px #6121a966,inset 0 0 20px #a34bff22}
+.top{display:flex;align-items:center;justify-content:space-between;background:#27104b;border:1px solid #b76bff;border-radius:18px;padding:13px;font-weight:bold;letter-spacing:1px}
+.server{text-align:center;margin:12px 0;padding:10px;border:1px solid #a85cff;border-radius:14px;color:#e8cfff;font-size:11px;letter-spacing:3px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#54ff9b;box-shadow:0 0 10px #54ff9b;margin-right:8px}
+.hero{border:2px solid #d6a8ff;border-radius:16px;text-align:center;padding:22px 8px;margin:12px 0;background:linear-gradient(135deg,#4c1b83,#1b0b38);box-shadow:inset 0 0 18px #c16cff44}
+.hero small{display:block;color:#d9baff;letter-spacing:3px;font-size:10px;margin-bottom:8px}
+#prediction{font-size:35px;font-weight:800;letter-spacing:3px;text-shadow:0 0 14px #d7a6ff}
+.meta{display:flex;justify-content:center;margin:12px 0}
+.pill{width:100%;text-align:center;border:1px solid #8e5dbb;border-radius:20px;padding:10px;color:#e9d7ff;font-size:12px}
+button{width:100%;border:0;border-radius:14px;padding:15px 10px;margin-top:10px;font-weight:800;letter-spacing:2px;color:white;background:linear-gradient(90deg,#7c24e9,#c02bff);box-shadow:0 5px 18px #8b2be477;cursor:pointer;font-size:14px}
+button.secondary{background:transparent;border:1px solid #a86bdf;box-shadow:none}
+.history{margin-top:15px;border-top:1px solid #70449a;padding-top:12px}
+.history h3{font-size:12px;letter-spacing:2px;color:#d8b7ff;margin:0 0 8px}
+#history{display:flex;gap:7px;flex-wrap:wrap}
+.tag{font-size:11px;padding:7px 10px;border-radius:12px;background:#26113e;border:1px solid #68418c}
+.disclaimer{font-size:10px;color:#b9a8ca;text-align:center;margin:13px 5px 2px;line-height:1.45}
+</style>
+</head>
+<body>
+<section id="login" class="panel" style="max-width:390px">
+  <div class="top"><span>◈ &nbsp; @developerwrt</span><span>LOGIN</span></div>
+  <section class="hero">
+    <small>SECURE ACCESS</small>
+    <div style="font-size:25px;font-weight:800;letter-spacing:2px">ENTER PASSWORD</div>
+  </section>
+  <input id="pass" type="password" placeholder="Enter password" autocomplete="off"
+    style="width:100%;padding:15px;border-radius:12px;border:1px solid #a86bdf;background:#160b29;color:white;font-size:16px;outline:none">
+  <button id="loginBtn">UNLOCK</button>
+  <p id="error" style="display:none;color:#ff8caa;text-align:center;font-size:12px">ACCESS DENIED — Incorrect password</p>
+</section>
+<div id="app" style="display:none;width:100%;place-items:center">
+<main class="panel">
+  <div class="top"><span>◈ &nbsp; @developerwrt</span><span>COLOUR HUD</span></div>
+  <div class="server"><span class="dot"></span> SERVER &nbsp; • &nbsp; ACTIVE</div>
+  <section class="hero">
+    <small>COLOUR PREDICTION</small>
+    <div id="prediction">READY</div>
+  </section>
+  <div class="meta"><div class="pill">MODE &nbsp; <b>BIG / SMALL</b></div></div>
+  <button id="generate">GENERATE</button>
+  <button class="secondary" id="invite">DEPOSIT NOW</button>
+  <section class="history">
+    <h3>RECENT RESULTS</h3>
+    <div id="history"><span class="tag">No results yet</span></div>
+  </section>
+  <p class="disclaimer">Results are generated randomly and are not verified predictions or guaranteed winning signals. Deposits and account balances are handled by the linked platform.</p>
+</main>
+</div>
+<script>
+const ACCESS_PASSWORD = "yash7735";
+const loginPanel = document.getElementById("login");
+const appPanel = document.getElementById("app");
+const passInput = document.getElementById("pass");
+const errorMsg = document.getElementById("error");
+function unlock() {
+  if (passInput.value === ACCESS_PASSWORD) {
+    loginPanel.style.display = "none";
+    appPanel.style.display = "grid";
+  } else {
+    errorMsg.style.display = "block";
+    passInput.value = "";
+    passInput.focus();
+  }
+}
+document.getElementById("loginBtn").addEventListener("click", unlock);
+passInput.addEventListener("keydown", e => { if (e.key === "Enter") unlock(); });
+
+const inviteUrl = "https://yaarwin1-vip.com/#/register?invitationCode=392497084069";
+const outcomes = ["RED • BIG","GREEN • SMALL","VIOLET • BIG","RED • SMALL","GREEN • BIG","VIOLET • SMALL"];
+const history = [];
+document.getElementById("generate").addEventListener("click",()=>{
+  const result = outcomes[Math.floor(Math.random()*outcomes.length)];
+  document.getElementById("prediction").textContent = result;
+  history.unshift(result);
+  history.splice(6);
+  document.getElementById("history").innerHTML = history.map(x=>`<span class="tag">${x}</span>`).join("");
+});
+document.getElementById("invite").addEventListener("click",()=>{
+  window.open(inviteUrl,"_blank","noopener,noreferrer");
+});
+</script>
+</body>
+</html>
